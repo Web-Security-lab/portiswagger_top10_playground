@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Register — Polylot Notes{% endblock %}
+
+{% block content %}
+<div style="max-width:440px;margin:3rem auto;">
+  <h1 style="text-align:center;margin-bottom:0.3rem;">Create an account</h1>
+  <p class="subtitle" style="text-align:center;margin-bottom:2rem;">
+    Join the multilingual note-sharing community
+  </p>
+
+  <div class="card">
+    <form method="POST" action="{{ url_for('auth.register') }}">
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email"
+               placeholder="you@example.com" required autocomplete="email" />
+        <small style="color:#484f58;font-size:0.78rem;">
+          International email addresses are supported (Unicode-aware).
+        </small>
+      </div>
+      <div class="form-group">
+        <label for="display_name">Display name</label>
+        <input type="text" id="display_name" name="display_name"
+               placeholder="Alice / Алиса / アリス" required maxlength="100" />
+        <small style="color:#484f58;font-size:0.78rem;">
+          Any script is welcome — your name will be normalized (NFKC) for display.
+        </small>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password"
+               placeholder="At least 8 characters" required minlength="8"
+               autocomplete="new-password" />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:0.5rem;">
+        Create Account
+      </button>
+    </form>
+
+    <hr style="border:none;border-top:1px solid #30363d;margin:1.2rem 0;" />
+
+    <p style="text-align:center;font-size:0.88rem;color:#6e7681;">
+      Already have an account?
+      <a href="{{ url_for('auth.login') }}">Sign in</a>
+    </p>
+  </div>
+
+  <div class="card" style="margin-top:1rem;border-color:#21262d;">
+    <p style="font-size:0.8rem;color:#484f58;line-height:1.6;">
+      <strong style="color:#6e7681;">Note on internationalization:</strong><br/>
+      Polylot Notes uses MySQL's <code>utf8mb4_0900_ai_ci</code> collation for
+      Unicode-safe email comparison. Display names are stored after NFKC normalization
+      to ensure consistent rendering across clients.
+    </p>
+  </div>
+</div>
+{% endblock %}

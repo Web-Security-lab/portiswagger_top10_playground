@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  web:
+    build: ./web
+    ports:
+      - "18007:3000"
+    environment:
+      - NODE_ENV=production
+    restart: always
+
+  bot:
+    build: ./bot
+    depends_on:
+      - web
+    restart: always

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ note.title }} — Polylot Notes{% endblock %}
+
+{% block content %}
+<div style="margin-bottom:1rem;">
+  <a href="{{ url_for('main.index') }}" style="font-size:0.88rem;color:#6e7681;">← Back to Explore</a>
+</div>
+
+<div class="card">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem;">
+    <h1 style="font-size:1.4rem;">{{ note.title }}</h1>
+    <div style="display:flex;gap:0.5rem;">
+      <span class="badge badge-blue">{{ note.language }}</span>
+      {% if note.is_public %}
+        <span class="badge badge-green">Public</span>
+      {% else %}
+        <span class="badge badge-gray">Private</span>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="note-meta" style="margin-bottom:1.5rem;">
+    <span>✍ {{ note.display_name }}</span>
+    <span>🕐 {{ note.created_at }}</span>
+  </div>
+
+  <hr style="border:none;border-top:1px solid #21262d;margin-bottom:1.5rem;" />
+
+  <pre><code>{{ note.content }}</code></pre>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "18004:8004"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=polylot
+      - DB_PASSWORD=p0ly10t_db_s3cr3t_2025
+      - DB_NAME=polylot_db
+      - SECRET_KEY=Th1s-1s-4-Fl4sk-S3cr3t-K3y!
+    volumes:
+      - ./flag:/flag:ro
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: false
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    networks:
+      - internal
+
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=r00t_pw_2025!
+      - MYSQL_DATABASE=polylot_db
+      - MYSQL_USER=polylot
+      - MYSQL_PASSWORD=p0ly10t_db_s3cr3t_2025
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - db_data:/var/lib/mysql
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_0900_ai_ci
+      --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test:
+        - "CMD"
+        - "mysqladmin"
+        - "ping"
+        - "-h"
+        - "localhost"
+        - "-u"
+        - "polylot"
+        - "-pp0ly10t_db_s3cr3t_2025"
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - internal
+
+volumes:
+  db_data:
+
+networks:
+  internal:
+    driver: bridge

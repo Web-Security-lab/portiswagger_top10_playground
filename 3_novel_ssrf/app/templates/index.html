@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internal Resource Fetcher</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 60px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .header {
+      border-bottom: 1px solid #21262d;
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      color: #58a6ff;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: #8b949e;
+      line-height: 1.6;
+    }
+
+    .warning {
+      background: #161b22;
+      border: 1px solid #f85149;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 28px;
+      font-size: 12px;
+      color: #f85149;
+    }
+
+    .form-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .form-group input[type=text] {
+      flex: 1;
+      padding: 10px 14px;
+      background: #161b22;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input[type=text]:focus {
+      border-color: #58a6ff;
+    }
+
+    .form-group button {
+      padding: 10px 20px;
+      background: #238636;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .form-group button:hover {
+      background: #2ea043;
+    }
+
+    .response-box {
+      background: #161b22;
+      border: 1px solid #21262d;
+      border-radius: 6px;
+      padding: 20px;
+    }
+
+    .response-box .label {
+      font-size: 11px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .response-box pre {
+      font-size: 12px;
+      color: #c9d1d9;
+      white-space: pre-wrap;
+      word-break: break-all;
+      line-height: 1.6;
+      min-height: 60px;
+    }
+
+    .status-ok  { color: #3fb950; }
+    .status-err { color: #f85149; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🔗 Internal Resource Fetcher</h1>
+      <p>내부 리소스를 가져오는 서비스입니다. URL을 입력하면 서버가 대신 요청을 수행합니다.</p>
+    </div>
+
+    <div class="warning">
+      ⚠ 보안 정책: 내부 IP 및 메타데이터 서버 접근은 차단됩니다.
+    </div>
+
+    <form method="POST" action="/fetch" id="fetchForm">
+      <div class="form-group">
+        <input type="text" name="url" id="urlInput"
+               placeholder="http://example.com"
+               autocomplete="off" />
+        <button type="submit">Fetch</button>
+      </div>
+    </form>
+
+    <div class="response-box">
+      <div class="label">Response</div>
+      <pre id="output">요청 결과가 여기에 표시됩니다.</pre>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('fetchForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const url = document.getElementById('urlInput').value;
+      const output = document.getElementById('output');
+
+      output.textContent = '요청 중...';
+      output.className = '';
+
+      try {
+        const res = await fetch('/fetch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'url=' + encodeURIComponent(url)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          output.className = 'status-ok';
+        } else {
+          output.className = 'status-err';
+        }
+
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        output.className = 'status-err';
+        output.textContent = '오류: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>

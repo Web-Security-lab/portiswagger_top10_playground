@@ -1,0 +1,28 @@
+services:
+  vulnerable-app:
+    build: ./app
+    container_name: blind-orm-leak-app
+    ports:
+      - "18002:8080"
+    environment:
+      PORT: 8080
+      INTERNAL_FLAG_URL: http://internal-note:5000/flag
+    depends_on:
+      - internal-note
+    networks:
+      - ctf-net
+
+  internal-note:
+    build: ./internal
+    container_name: blind-orm-leak-internal
+    environment:
+      FLAG: WSL{orm_filter_oracle}
+      PORT: 5000
+    # expose:
+    #   - "5000"
+    networks:
+      - ctf-net
+
+networks:
+  ctf-net:
+    driver: bridge

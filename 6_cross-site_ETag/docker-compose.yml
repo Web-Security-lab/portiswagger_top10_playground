@@ -1,0 +1,47 @@
+services:
+  victim:
+    build: ./app
+    environment:
+      FLAG: "${FLAG}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+      SESSION_SECRET: "${SESSION_SECRET}"
+      NO_DEPRECATION: "express-session"
+    healthcheck:
+      test: ["CMD", "node", "-e", "const h=require('http');h.get('http://localhost:3000/api/me',r=>{process.exit(r.statusCode===401?0:1)}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - ctf-net
+    ports:
+      - "18006:3000"
+    restart: unless-stopped
+
+  attacker:
+    build: ./attacker
+    networks:
+      - ctf-net
+    ports:
+      - "4000:4000"
+    restart: unless-stopped
+
+  bot:
+    build: ./bot
+    environment:
+      VICTIM_URL: "http://victim:3000"
+      ATTACKER_URL: "http://attacker:4000"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+    networks:
+      - ctf-net
+    # ports:
+    #   - "3001:3001"
+    depends_on:
+      victim:
+        condition: service_healthy
+      attacker:
+        condition: service_started
+    restart: unless-stopped
+
+networks:
+  ctf-net:
+    driver: bridge

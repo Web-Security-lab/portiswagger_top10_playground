@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Polylot Notes — Multilingual Note Sharing{% endblock %}
+
+{% block content %}
+<div style="margin-bottom:2.5rem;">
+  <h1>Multilingual Notes, Shared Globally</h1>
+  <p class="subtitle">
+    Write and discover notes in any language.
+    Unicode-native &mdash; every script, every character, perfectly rendered.
+  </p>
+  {% if not session.get('user_id') %}
+    <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started</a>
+    <a href="{{ url_for('auth.login') }}" class="btn btn-secondary" style="margin-left:0.5rem;">Log In</a>
+  {% else %}
+    <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary">My Dashboard</a>
+  {% endif %}
+</div>
+
+<!-- Search Bar -->
+<div style="margin-bottom:2rem;">
+  <h2>Search Public Notes</h2>
+  <div style="display:flex;gap:0.6rem;align-items:center;">
+    <input type="text" id="search-input" placeholder="Search in any language... (e.g. Unicode, こんにちは, Привет)" style="flex:1;" />
+    <button class="btn btn-primary" onclick="doSearch()">Search</button>
+  </div>
+  <p style="font-size:0.8rem;color:#484f58;margin-top:0.5rem;">
+    Powered by NFKC normalization — compatibility characters are automatically resolved.
+  </p>
+  <div id="search-results" style="margin-top:1.2rem;"></div>
+</div>
+
+<!-- Recent Notes -->
+<div>
+  <h2>Recent Public Notes</h2>
+  {% if notes %}
+    {% for note in notes %}
+      <a href="{{ url_for('main.view_note', note_id=note.id) }}" style="display:block;text-decoration:none;">
+        <div class="note-card">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;">
+            <h3>{{ note.title }}</h3>
+            <span class="badge badge-blue">{{ note.language }}</span>
+          </div>
+          <p class="preview">{{ note.preview }}</p>
+          <div class="note-meta">
+            <span>✍ {{ note.display_name }}</span>
+            <span>🕐 {{ note.created_at }}</span>
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+  {% else %}
+    <div class="card" style="color:#484f58;text-align:center;padding:2.5rem;">
+      No public notes yet. Be the first to share!
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block head %}
+<script>
+async function doSearch() {
+  const q = document.getElementById('search-input').value;
+  const container = document.getElementById('search-results');
+
+  if (!q.trim()) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = '<p style="color:#484f58;font-size:0.9rem;">Searching...</p>';
+
+  try {
+    const resp = await fetch('/api/notes/search?q=' + encodeURIComponent(q), {
+      credentials: 'include'
+    });
+
+    if (resp.status === 401) {
+      container.innerHTML =
+        '<div class="alert alert-info">Please <a href="/auth/login">log in</a> to use search.</div>';
+      return;
+    }
+
+    if (resp.status === 403) {
+      const data = await resp.json();
+      container.innerHTML =
+        `<div class="alert alert-error">${data.error || 'Request blocked by WAF.'}</div>`;
+      return;
+    }
+
+    const rows = await resp.json();
+
+    if (!rows.length) {
+      container.innerHTML = '<p style="color:#484f58;font-size:0.9rem;">No matching notes found.</p>';
+      return;
+    }
+
+    container.innerHTML = rows.map(r => `
+      <a href="/notes/${r.id}" style="display:block;text-decoration:none;">
+        <div class="note-card">
+          <h3>${escHtml(r.title)}</h3>
+          <p class="preview">${escHtml(r.preview)}</p>
+          <div class="note-meta">
+            <span>✍ ${escHtml(r.display_name)}</span>
+          </div>
+        </div>
+      </a>
+    `).join('');
+
+  } catch (e) {
+    container.innerHTML =
+      '<div class="alert alert-error">Search request failed. Please try again.</div>';
+  }
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+document.getElementById('search-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+</script>
+{% endblock %}

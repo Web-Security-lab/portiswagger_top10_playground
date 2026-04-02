@@ -1,0 +1,4 @@
+app/node_modules/
+internal/node_modules/
+app/prisma/dev.db
+app/prisma/dev.db-journal

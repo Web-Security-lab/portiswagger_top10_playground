@@ -1,0 +1,14 @@
+# C:\portiswagger_top10\docker-compose.yml
+version: '3.8'
+
+services:
+  main_dashboard:
+    build: ./0_main_page
+    container_name: portswigger_dashboard
+    ports:
+      - "18000:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+      - .:/playground  
+    working_dir: /playground/0_main_page  
+    restart: unless-stopped

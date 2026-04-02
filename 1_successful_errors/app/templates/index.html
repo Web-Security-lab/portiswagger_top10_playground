@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Preview | DesignCo Internal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <header class="app-header">
+            <div class="brand-badge">DesignCo Internal</div>
+            <h1 class="title">Template Preview</h1>
+            <p class="subtitle">Preview your Jinja2 templates before deployment.</p>
+        </header>
+
+        <form method="POST" action="/render" class="editor-form">
+            <div class="form-group">
+                <div class="label-row">
+                    <label for="template">Jinja2 Template Code</label>
+                    <span class="label-hint">HTML / Jinja2</span>
+                </div>
+                <div class="editor-container">
+                    <textarea
+                        id="template"
+                        name="template"
+                        rows="12"
+                        spellcheck="false"
+                        placeholder="&#10;<div>&#10;  Hello {{ '{{' }} name {{ '}}' }}!&#10;</div>"
+                    >{{ template_input if template_input else '' }}</textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Render Preview
+                </button>
+            </div>
+        </form>
+
+        {% if output %}
+        <section class="output-section">
+            <div class="output-header">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+                <h3>Output</h3>
+            </div>
+            <div class="output-body">
+                <pre>{{ output }}</pre>
+            </div>
+        </section>
+        {% endif %}
+    </main>
+</body>
+</html>
