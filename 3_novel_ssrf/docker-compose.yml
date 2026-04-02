@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  vulnerable-app:
+    build: ./app
+    ports:
+      - "18003:8080"
+    networks:
+      ctf-net:
+        ipv4_address: 10.0.0.2
+    depends_on:
+      - mock-metadata
+
+  mock-metadata:
+    build: ./metadata
+    networks:
+      ctf-net:
+        ipv4_address: 10.0.0.10
+    # 외부 포트 노출 없음 — 참가자 직접 접근 불가
+
+networks:
+  ctf-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24

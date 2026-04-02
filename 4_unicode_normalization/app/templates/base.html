@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Polylot Notes{% endblock %}</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0f1117;
+      color: #c9d1d9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    nav {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-brand {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #e6edf3;
+      letter-spacing: -0.5px;
+    }
+    .nav-brand span { color: #58a6ff; }
+    .nav-links { display: flex; gap: 1rem; margin-left: auto; }
+    .nav-links a {
+      color: #8b949e;
+      font-size: 0.9rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: #e6edf3; background: #21262d; text-decoration: none; }
+    .nav-links a.active { color: #58a6ff; }
+
+    /* ── Main Content ─────────────────────────────────────────── */
+    main {
+      flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+    }
+
+    /* ── Alerts ───────────────────────────────────────────────── */
+    .alert {
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+    }
+    .alert-success { background: #0d2c1f; border-color: #238636; color: #56d364; }
+    .alert-error   { background: #2c0d0d; border-color: #da3633; color: #f85149; }
+    .alert-info    { background: #0c2040; border-color: #1f6feb; color: #58a6ff; }
+
+    /* ── Cards ────────────────────────────────────────────────── */
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .card:hover { border-color: #58a6ff44; }
+
+    /* ── Buttons ──────────────────────────────────────────────── */
+    .btn {
+      display: inline-block;
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: #238636;
+      border-color: #2ea043;
+      color: #fff;
+    }
+    .btn-primary:hover { background: #2ea043; text-decoration: none; }
+    .btn-secondary {
+      background: transparent;
+      border-color: #30363d;
+      color: #8b949e;
+    }
+    .btn-secondary:hover { border-color: #8b949e; color: #c9d1d9; text-decoration: none; }
+    .btn-danger {
+      background: transparent;
+      border-color: #da3633;
+      color: #f85149;
+    }
+    .btn-danger:hover { background: #2c0d0d; text-decoration: none; }
+
+    /* ── Forms ────────────────────────────────────────────────── */
+    .form-group { margin-bottom: 1.2rem; }
+    label { display: block; margin-bottom: 0.4rem; font-size: 0.9rem; color: #8b949e; }
+    input[type="text"], input[type="email"], input[type="password"],
+    select, textarea {
+      width: 100%;
+      padding: 0.6rem 0.85rem;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #c9d1d9;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #58a6ff; }
+    textarea { resize: vertical; min-height: 120px; font-family: inherit; }
+
+    /* ── Tags & Badges ────────────────────────────────────────── */
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-blue   { background: #1f3a5f; color: #79c0ff; }
+    .badge-green  { background: #0d2c1f; color: #56d364; }
+    .badge-purple { background: #2a1f5f; color: #d2a8ff; }
+    .badge-gray   { background: #21262d; color: #8b949e; }
+
+    /* ── Note Card ────────────────────────────────────────────── */
+    .note-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 1.4rem;
+      margin-bottom: 0.9rem;
+      transition: border-color 0.15s, transform 0.1s;
+    }
+    .note-card:hover { border-color: #30363d88; transform: translateY(-1px); }
+    .note-card h3 { font-size: 1rem; color: #e6edf3; margin-bottom: 0.5rem; }
+    .note-card .preview { font-size: 0.88rem; color: #6e7681; line-height: 1.6; white-space: pre-wrap; }
+    .note-meta { font-size: 0.78rem; color: #484f58; margin-top: 0.8rem; display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+    /* ── Section headings ─────────────────────────────────────── */
+    h1 { font-size: 1.6rem; color: #e6edf3; margin-bottom: 0.4rem; font-weight: 700; }
+    h2 { font-size: 1.25rem; color: #e6edf3; margin-bottom: 1rem; font-weight: 600; }
+    .subtitle { color: #6e7681; font-size: 0.9rem; margin-bottom: 2rem; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 1.2rem;
+      font-size: 0.78rem;
+      color: #30363d;
+      border-top: 1px solid #21262d;
+    }
+
+    /* ── Code / Monospace ─────────────────────────────────────── */
+    code {
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.87em;
+      background: #21262d;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      color: #ff7b72;
+    }
+    pre {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      overflow-x: auto;
+      font-size: 0.87rem;
+      line-height: 1.6;
+    }
+    pre code { background: none; padding: 0; color: #c9d1d9; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      main { padding: 1.5rem 1rem; }
+      nav  { padding: 0 1rem; }
+    }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="{{ url_for('main.index') }}">
+    <span>Polylot</span> Notes
+  </a>
+  <div class="nav-links">
+    <a href="{{ url_for('main.index') }}">Explore</a>
+    {% if session.get('user_id') %}
+      <a href="{{ url_for('main.dashboard') }}">My Notes</a>
+      <a href="{{ url_for('auth.logout') }}">Logout</a>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}">Login</a>
+      <a href="{{ url_for('auth.register') }}">Register</a>
+    {% endif %}
+  </div>
+</nav>
+
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  Polylot Notes &mdash; A multilingual note-taking service powered by Unicode &bull;
+  All content is UTF-8 encoded &bull; NFKC normalization applied
+</footer>
+
+</body>
+</html>

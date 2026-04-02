@@ -1,0 +1,24 @@
+services:
+  ssti-preview:
+    build: .
+    container_name: ssti-preview
+    ports:
+      - "18001:5000"
+    environment:
+      - FLAG=WSL{PerFecT_3rr0r_b4s3d_sst1}
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+          pids: 50
+        reservations:
+          memory: 64M
+    read_only: true
+    tmpfs:
+      - /tmp:size=10M,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecureNotes - 나만의 비공개 메모</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #eef0f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #dde0e6;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      max-width: 560px;
+      width: 100%;
+      padding: 48px 36px;
+      text-align: center;
+    }
+    .logo {
+      font-size: 36px;
+      font-weight: 700;
+      color: #2d3748;
+      margin-bottom: 8px;
+    }
+    .tagline {
+      font-size: 16px;
+      color: #718096;
+      margin-bottom: 40px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+      text-align: left;
+    }
+    .feature {
+      padding: 16px;
+      background: #f7f8fa;
+      border-radius: 8px;
+      border: 1px solid #e8eaef;
+    }
+    .feature-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 4px;
+    }
+    .feature-desc {
+      font-size: 13px;
+      color: #718096;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .btn {
+      padding: 12px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.15s;
+    }
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+    .btn-primary:hover { background: #5a6fd6; }
+    .btn-secondary {
+      background: white;
+      color: #667eea;
+      border: 1.5px solid #667eea;
+    }
+    .btn-secondary:hover { background: #f5f7ff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="logo">SecureNotes</h1>
+    <p class="tagline">소중한 메모를 안전하게 보관하세요</p>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-title">비공개 메모</div>
+        <div class="feature-desc">나만 볼 수 있는 안전한 저장</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">간편한 사용</div>
+        <div class="feature-desc">가입 후 바로 이용 가능</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">관리자 기능</div>
+        <div class="feature-desc">관리자 전용 메모 관리</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a href="/login.html" class="btn btn-primary">로그인</a>
+      <a href="/register.html" class="btn btn-secondary">회원가입</a>
+    </div>
+  </div>
+
+  <script>
+    fetch('/api/me', { credentials: 'include' })
+      .then(res => res.ok ? res.json() : null)
+      .then(user => {
+        if (user && user.id) window.location.href = '/notes.html';
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>

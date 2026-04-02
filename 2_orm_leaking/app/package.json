@@ -1,0 +1,19 @@
+{
+  "name": "blind-orm-leak-app",
+  "version": "1.0.0",
+  "description": "Training environment vulnerable app for blind ORM leak",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "db:push": "prisma db push",
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0"
+  }
+}
