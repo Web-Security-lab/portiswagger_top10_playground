@@ -17,7 +17,7 @@ challenges = [
     {"id": 7, "folder_name": "7_Next.js_cache", "name": "Next.js cache", "description": "Next.js 애플리케이션의 캐시 포이즈닝 취약점", "detail": "Next.js 프레임워크의 캐시 라우팅을 오염시켜 다른 사용자에게 악의적인 응답이 반환되도록 하세요.", "port": 18007, "flag": "WSL{cache_p0isoning_V1a_XSS}"},
     {"id": 8, "folder_name": "8_xss_leak", "name": "XSS leak", "description": "XSS를 응용한 민감 데이터 릭(Leak) 기법", "detail": "단순한 알림창을 띄우는 것을 넘어, XSS를 통해 페이지 내의 민감한 CSRF 토큰을 외부로 유출시키세요.", "port": 18008, "flag": "WSL{Xss_13ak_M@5ter!}"},
     {"id": 9, "folder_name": "9_HTTP2_CONNECT", "name": "HTTP2 CONNECT", "description": "HTTP/2 CONNECT 악용 스머글링 및 프록시 공격", "detail": "HTTP/2 프로토콜의 CONNECT 메서드를 악용해 프록시 제한을 우회하고 내부 관리자 페이지에 접근하세요.", "port": 18009, "flag": "WSL{http2_authority_header_confusion}"},
-    {"id": 10, "folder_name": "10_parser_differentials", "name": "Parser differentials", "description": "서로 다른 파서 간의 해석 차이를 이용한 취약점", "detail": "프론트엔드 프록시와 백엔드 서버의 HTTP 파싱 차이를 이용한 Request Smuggling 공격을 수행하세요.", "port": 18010, "flag": "WSL{test}"},
+    {"id": 10, "folder_name": "10_parser_differentials/Training-Environment---Parser-Differentials-main", "name": "Parser differentials", "description": "서로 다른 파서 간의 해석 차이를 이용한 취약점", "detail": "프론트엔드 프록시와 백엔드 서버의 HTTP 파싱 차이를 이용한 Request Smuggling 공격을 수행하세요.", "port": 18010, "flag": "WSL{test}"},
 ]
 
 @app.route('/')

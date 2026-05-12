@@ -1,31 +1,31 @@
 # PortSwigger Top 10 2025 Playground
 
-[한국어 문서 (Korean)](./README-KR.md)
+[English (Default)](./README.md)
 
 ![Docker](https://img.shields.io/badge/Docker-Required-2496ED?logo=docker&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-CTF%20%7C%20Wargame-orange)
 ![Year](https://img.shields.io/badge/Coverage-2025-success)
 
-A local CTF/wargame playground based on **PortSwigger Top 10 Web Hacking Techniques of 2025**.  
-Each challenge is isolated with Docker, and the main dashboard lets you start/stop instances and submit flags.
+PortSwigger **Top 10 Web Hacking Techniques of 2025**를 기반으로 제작한 로컬 워게임/실습 저장소입니다.  
+시나리오별 취약 환경을 Docker로 분리하고, 메인 대시보드에서 인스턴스 제어 및 플래그 제출을 수행할 수 있도록 구성했습니다.
 
 ---
 
-## Overview
+## 개요
 
-This repository is designed for:
+이 프로젝트는 다음 목적을 위해 설계되었습니다.
 
-- Hands-on practice with modern web exploitation techniques
-- Reproducible lab environments for classes, study groups, and team training
-- Per-challenge isolation with centralized dashboard control
+- 최신 웹 취약점 트렌드 기반 실습 환경 제공
+- 교육/스터디/팀 훈련에 바로 사용할 수 있는 재현 가능한 랩 제공
+- 시나리오별 독립 실행 + 대시보드 기반 통합 운영
 
 ---
 
-## Requirements
+## 환경 요구사항
 
 - Docker
 - Docker Compose v2 (`docker compose`)
-- (Recommended) 8GB+ RAM
+- (권장) 메모리 8GB 이상
 
 ---
 
@@ -37,20 +37,20 @@ cd portiswagger_top10_playground
 docker compose up -d --build
 ```
 
-Then open:
+실행 후 접속:
 
 - **Dashboard**: http://localhost:18000
 
-Play flow:
+플레이 흐름:
 
-1. Choose a challenge card
-2. Start the instance
-3. Exploit and retrieve the flag
-4. Submit the flag
+1. 챌린지 카드 선택
+2. 인스턴스 시작
+3. 실습 진행
+4. 플래그 제출
 
 ---
 
-## Challenge Matrix
+## 챌린지 매트릭스
 
 | # | Technique | Directory | Access Port | Status |
 |---|---|---|---:|---|
@@ -67,22 +67,22 @@ Play flow:
 
 ---
 
-## Run Challenges Manually
+## 개별 실행 방법
 
-### Generic
+### 일반 실행
 
 ```bash
 cd <challenge-directory>
 docker compose up -d --build
 ```
 
-### Stop
+### 종료
 
 ```bash
 docker compose down
 ```
 
-### Challenge #10 Example
+### #10 Parser Differentials 실행 예시
 
 ```bash
 cd 10_parser_differentials/Training-Environment---Parser-Differentials-main
@@ -91,7 +91,7 @@ docker compose up -d --build
 
 ---
 
-## Architecture
+## 아키텍처
 
 ```mermaid
 flowchart LR
@@ -110,15 +110,15 @@ flowchart LR
 
 ---
 
-## Screenshots
+## 스크린샷
 
-Add images under:
+아래 경로에 이미지 파일을 추가해서 사용할 수 있습니다.
 
 - `docs/assets/dashboard.png`
 - `docs/assets/challenge-modal.png`
 - `docs/assets/sample-exploit-flow.png`
 
-Markdown example:
+예시:
 
 ```md
 ![Dashboard](docs/assets/dashboard.png)
@@ -126,11 +126,11 @@ Markdown example:
 
 ---
 
-## Repository Structure
+## 디렉토리 구조
 
 ```text
 .
-├── 0_main_page/                # Main dashboard (Flask)
+├── 0_main_page/                # 통합 대시보드 (Flask)
 ├── 1_successful_errors/
 ├── 2_orm_leaking/
 ├── 3_novel_ssrf/
@@ -141,20 +141,20 @@ Markdown example:
 ├── 8_xss_leak/
 ├── 9_HTTP2_CONNECT/
 ├── 10_parser_differentials/
-└── docker-compose.yml           # Dashboard compose
+└── docker-compose.yml           # 대시보드 실행용 compose
 ```
 
 ---
 
-## TODO
+## 운영 TODO
 
-- [ ] Implement real scenario for #5 (`5_soapwn_pwning_NET`)
-- [ ] Add shared difficulty/hint/time policy docs
-- [ ] Finalize screenshots in `docs/assets/`
+- [ ] #5 (`5_soapwn_pwning_NET`) 실제 시나리오 구현
+- [ ] 공통 난이도/힌트 정책/예상 풀이 시간 문서화
+- [ ] `docs/assets/` 스크린샷 자산 정리
 
 ---
 
 ## Legal / Disclaimer
 
-For **educational and research purposes only**.  
-Do not use this project to test unauthorized real-world systems.
+본 저장소는 **교육 및 연구 목적**으로만 제공됩니다.  
+실제 서비스 또는 제3자 시스템에 대한 무단 테스트에 사용하지 마세요.
