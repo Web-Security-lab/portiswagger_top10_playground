@@ -1,0 +1,7 @@
+services:
+  parser-differential:
+    build: ./app
+    ports:
+      - "18010:8080"
+    environment:
+      FLAG: "WSL{mind_the_interpretation_gap}"
