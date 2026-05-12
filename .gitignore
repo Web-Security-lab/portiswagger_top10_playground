@@ -1,0 +1,16 @@
+# Runtime / local agent state
+.omx/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Common private key material
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+
+# OS junk
+.DS_Store

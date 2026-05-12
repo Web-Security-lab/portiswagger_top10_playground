@@ -40,6 +40,7 @@ etag-leak-ctf/
 Docker와 Docker Compose가 설치된 환경에서 실행합니다.
 
 ```bash
+cp .env.example .env
 docker compose up --build -d
 ```
 
