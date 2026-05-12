@@ -110,22 +110,6 @@ flowchart LR
 
 ---
 
-## 스크린샷
-
-아래 경로에 이미지 파일을 추가해서 사용할 수 있습니다.
-
-- `docs/assets/dashboard.png`
-- `docs/assets/challenge-modal.png`
-- `docs/assets/sample-exploit-flow.png`
-
-예시:
-
-```md
-![Dashboard](docs/assets/dashboard.png)
-```
-
----
-
 ## 디렉토리 구조
 
 ```text
@@ -143,14 +127,6 @@ flowchart LR
 ├── 10_parser_differentials/
 └── docker-compose.yml           # 대시보드 실행용 compose
 ```
-
----
-
-## 운영 TODO
-
-- [ ] #5 (`5_soapwn_pwning_NET`) 실제 시나리오 구현
-- [ ] 공통 난이도/힌트 정책/예상 풀이 시간 문서화
-- [ ] `docs/assets/` 스크린샷 자산 정리
 
 ---
 

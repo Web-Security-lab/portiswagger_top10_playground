@@ -110,22 +110,6 @@ flowchart LR
 
 ---
 
-## Screenshots
-
-Add images under:
-
-- `docs/assets/dashboard.png`
-- `docs/assets/challenge-modal.png`
-- `docs/assets/sample-exploit-flow.png`
-
-Markdown example:
-
-```md
-![Dashboard](docs/assets/dashboard.png)
-```
-
----
-
 ## Repository Structure
 
 ```text
@@ -143,15 +127,6 @@ Markdown example:
 ├── 10_parser_differentials/
 └── docker-compose.yml           # Dashboard compose
 ```
-
----
-
-## TODO
-
-- [ ] Implement real scenario for #5 (`5_soapwn_pwning_NET`)
-- [ ] Add shared difficulty/hint/time policy docs
-- [ ] Finalize screenshots in `docs/assets/`
-
 ---
 
 ## Legal / Disclaimer
